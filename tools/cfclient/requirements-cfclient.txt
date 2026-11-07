@@ -1,7 +1,7 @@
 # cfclient for ESP-Drone - exact versions tested on Windows with Python 3.11 (Nov 2026).
 # Install with:  pip install --no-deps -r requirements-cfclient.txt
 # (--no-deps is required: cfclient itself asks for an unpinned cflib from GitHub.)
-cflib @ git+https://github.com/RobocodeUK/crazyflie-lib-python.git@a430283a3b608db7c0b3227aa37d7120858c25ef
+cflib @ git+https://github.com/RobocodeUK/crazyflie-lib-python.git@f2baeab8067c67a789d8e0c7946952639968ee58
 cfclient @ git+https://github.com/RobocodeUK/crazyflie-clients-python.git@76d509343d37bd6e0292adb62295d8deb0fc7d1a
 appdirs==1.4.4
 colorama==0.4.6
