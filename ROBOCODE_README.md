@@ -22,7 +22,7 @@ Press `Ctrl+]` to leave the monitor. Run `set-target` again only when switching 
 
 ## cfclient (PC control/debug app) — optional
 
-Pinned to the ESP-Drone forks: cfclient `leeebo/crazyflie-clients-python@76d5093` and cflib `leeebo/crazyflie-lib-python@a430283` (the Wi-Fi/UDP link). Exact library versions are in `tools/cfclient/requirements-cfclient.txt`.
+Pinned to Robocode forks of the ESP-Drone cfclient (`RobocodeUK/crazyflie-clients-python@76d5093`, from leeebo) and cflib (`RobocodeUK/crazyflie-lib-python@a430283`) (the Wi-Fi/UDP link). Exact library versions are in `tools/cfclient/requirements-cfclient.txt`.
 
 1. Install **Python 3.11** from python.org (3.13 does **not** work: numpy 1.x, pyzmq 25 and vispy 0.14 have no 3.13 builds).
 2. Double-click `tools\cfclient\install_cfclient.bat` (creates `C:\esp\cfclient-venv`).
