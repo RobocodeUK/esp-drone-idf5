@@ -19,3 +19,11 @@ idf.py -p COM5 flash monitor     (change COM5 to your port)
 ```
 
 Press `Ctrl+]` to leave the monitor. Run `set-target` again only when switching between S2 and S3 boards.
+
+## cfclient (PC control/debug app) — optional
+
+Pinned to the ESP-Drone forks: cfclient `leeebo/crazyflie-clients-python@76d5093` and cflib `leeebo/crazyflie-lib-python@a430283` (the Wi-Fi/UDP link). Exact library versions are in `tools/cfclient/requirements-cfclient.txt`.
+
+1. Install **Python 3.11** from python.org (3.13 does **not** work: numpy 1.x, pyzmq 25 and vispy 0.14 have no 3.13 builds).
+2. Double-click `tools\cfclient\install_cfclient.bat` (creates `C:\esp\cfclient-venv`).
+3. Connect the PC to the drone's Wi-Fi (`ESP-DRONE_XXXX`, password `12345678`), then run `C:\esp\cfclient-venv\Scripts\cfclient.exe`.
