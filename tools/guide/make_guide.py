@@ -128,10 +128,10 @@ S += [
     Spacer(1, 4),
     table([
         ['Part', 'What you do', 'Time'],
-        ['A', 'Install the tools: Git, ESP-IDF 5.0.7, Python 3.11', '30-45 min'],
+        ['A', 'Install the tools: Git and ESP-IDF 5.0.7', '25-40 min'],
         ['B', 'Download the Robocode ESP-Drone code', '2 min'],
         ['C', 'Build the firmware and flash it to the drone', '10 min'],
-        ['D', 'Install cfclient (PC app to view data and fly)', '5 min'],
+        ['D', 'Install cfclient (PC app to view data and fly) - one double-click, also sets up Python', '5-10 min'],
         ['E', 'Connect to the drone and check live data', '5 min'],
         ['F', 'Troubleshooting', 'as needed'],
     ], [14 * mm, W - 44 * mm, 30 * mm]),
@@ -147,9 +147,9 @@ S += [
         ['Gamepad (optional)', 'For flying from cfclient, e.g. a PS3/PS4/Xbox USB controller.'],
     ], [52 * mm, W - 52 * mm]),
     Spacer(1, 8),
-    box('warn', 'Use exactly the versions in this guide: <b>ESP-IDF 5.0.7</b> and <b>Python 3.11</b>. '
-                'Newer ESP-IDF versions will not build this code, and Python 3.12/3.13 will not install cfclient. '
-                'Do not download ESP-Drone from Espressif\'s GitHub; use the Robocode copy.'),
+    box('warn', 'Use exactly <b>ESP-IDF 5.0.7</b>: newer versions will not build this code. cfclient needs '
+                '<b>Python 3.11</b>; the cfclient installer in Part D sets this up for you, so you do not need to '
+                'install Python yourself. Do not download ESP-Drone from Espressif\'s GitHub; use the Robocode copy.'),
     PageBreak(),
 ]
 
@@ -176,13 +176,6 @@ S += [
                       '<font face="Courier">idf.py --version</font>. It should print <b>ESP-IDF v5.0.7</b>.'),
          box('warn', 'Always build and flash from the <b>ESP-IDF 5.0 CMD</b> shortcut. A normal Command Prompt '
                      'or PowerShell window does not have the tools set up and will show errors.')),
-    step(3, 'Install Python 3.11.9 (for cfclient)',
-         'Go to <b>python.org/downloads/release/python-3119/</b>, scroll to <i>Files</i> and download '
-         '<b>Windows installer (64-bit)</b>. Run it, keep <b>Install launcher for all users</b> ticked, '
-         'and click <b>Install Now</b>.',
-         'You do not need to remove any other Python versions; they can live side by side.',
-         box('check', 'In Command Prompt run <font face="Courier">py -3.11 --version</font>. '
-                      'It should print <b>Python 3.11.9</b>.')),
     Spacer(1, 6),
 ]
 
@@ -237,11 +230,17 @@ S += [
     step(1, 'Run the installer',
          'cfclient is the PC app for viewing the drone\'s live sensor data and flying it with a gamepad. '
          'In File Explorer open <font face="Courier">C:\\esp\\esp-drone\\tools\\cfclient</font> and '
-         'double-click <b>install_cfclient.bat</b>. It takes about 5 minutes and downloads the exact tested '
-         'versions of everything.',
-         box('check', 'The window ends with <b>Done</b> and a shortcut called <b>cfclient (ESP-Drone)</b> '
-                      'appears on the desktop. Press any key to close the window.'),
-         box('note', 'If it says <i>Python 3.11 not found</i> or <i>Git not found</i>, go back to Part A. '
+         'double-click <b>install_cfclient.bat</b>. It works through four stages:',
+         '&bull; <b>[1/4]</b> Checks for Python 3.11. If this PC does not have it, it downloads '
+         '<b>Python 3.11.9</b> from python.org and installs it for your Windows user (no admin needed, '
+         'and any other Python versions are left alone).<br/>'
+         '&bull; <b>[2/4]</b> Checks Git is installed.<br/>'
+         '&bull; <b>[3/4]</b> Installs cfclient with the exact tested versions of everything.<br/>'
+         '&bull; <b>[4/4]</b> Adds a <b>cfclient (ESP-Drone)</b> shortcut to the desktop.',
+         'It takes 5-10 minutes. Leave the window open until it finishes.',
+         box('check', 'The window ends with <b>Done</b> and the <b>cfclient (ESP-Drone)</b> shortcut is on the '
+                      'desktop. Press any key to close the window.'),
+         box('note', 'If it says <i>Git not found</i>, install Git (Part A step 1) and run it again. '
                      'It is safe to run the installer again at any time.')),
     Spacer(1, 4),
     p('Part E - Connect to the drone', H1),
@@ -273,7 +272,7 @@ S += [
     step(5, 'Finish',
          'Click <b>Disconnect</b> in cfclient, unplug the drone battery, and reconnect the PC to your normal '
          'Wi-Fi.'),
-    PageBreak(),
+    Spacer(1, 8),
 ]
 
 # ---------------------------------------------------------------- Part F troubleshooting
@@ -302,14 +301,19 @@ S += [
          'Close cfclient completely and open it again.'],
         ['Scan / Connect does nothing',
          'Check the PC is connected to the drone\'s Wi-Fi (not your normal network) and the drone is powered.'],
-        ['install_cfclient.bat: <i>Python 3.11 not found</i> / <i>Git not found</i>',
-         'Install the missing tool from Part A (Python 3.11.9 and Git for Windows), then run it again.'],
+        ['install_cfclient.bat: <i>Git not found</i>',
+         'Install Git for Windows (Part A step 1), then run it again.'],
+        ['install_cfclient.bat fails at step [1/4] (Python download or install)',
+         'Check the internet connection and run it again. If it still fails, install <b>Python 3.11.9</b> '
+         'yourself from <b>python.org/downloads/release/python-3119/</b> (Windows installer 64-bit) and run '
+         'the .bat again; it will find it.'],
         ['Build errors mentioning long paths or missing files',
          'Make sure the code is at exactly <font face="Courier">C:\\esp\\esp-drone</font> (no spaces).'],
     ], [70 * mm, W - 70 * mm]),
     Spacer(1, 10),
     p('For teachers: keeping the setup frozen', H2),
-    p('Everything is pinned so nothing changes unless Robocode changes it:'),
+    p('Everything is pinned so nothing changes unless Robocode changes it:',
+      ParagraphStyle('keep', parent=BODY, keepWithNext=1)),
     table([
         ['Part', 'Pinned to'],
         ['Firmware', '<b>RobocodeUK/esp-drone-idf5</b> (based on Espressif esp-drone commit db0f6562, the last '

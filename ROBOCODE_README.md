@@ -14,7 +14,7 @@ idf.py set-target esp32s2          (or esp32s3)
 idf.py -p COM3 flash monitor       (use your COM port; Ctrl+] to exit)
 ```
 
-cfclient — install **Python 3.11.9** and **Git for Windows**, then double-click `tools\cfclient\install_cfclient.bat`. Join the drone's Wi-Fi `ESP-DRONE_XXXXXXXXXXXX` (password `12345678`) and start **cfclient (ESP-Drone)** from the desktop.
+cfclient — with **Git for Windows** installed, double-click `tools\cfclient\install_cfclient.bat`. It installs **Python 3.11.9** from python.org (for the current user) if the PC doesn't have it, then cfclient. Join the drone's Wi-Fi `ESP-DRONE_XXXXXXXXXXXX` (password `12345678`) and start **cfclient (ESP-Drone)** from the desktop.
 
 ## What is pinned
 
@@ -39,4 +39,4 @@ Don't update to newer upstream esp-drone: it needs ESP-IDF 5.5 or 6.1.
 - **`MPU6050 I2C connection [FAIL]`** on boot (no sensor data, cfclient frozen): the IMU has locked up, often after a crash or on a low battery. Unplug USB **and** battery for 10 s, then power on again. Charge the battery.
 - **Windows drops the drone Wi-Fi** after ~40 s and rejoins the home network (the drone has no internet). Untick "Connect automatically" on other saved networks while flying.
 - **cfclient "Socket is already connected"** after a disconnect: close and reopen cfclient.
-- cfclient is tested on Python 3.11 only. Python 3.13 will not install it.
+- cfclient is tested on Python 3.11 only (the installer sets it up). Python 3.13 will not install it.
