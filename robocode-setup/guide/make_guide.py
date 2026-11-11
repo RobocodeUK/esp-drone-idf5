@@ -123,23 +123,23 @@ S += [
     p('ESP-Drone Setup Guide', TITLE),
     p('From a fresh Windows PC to a flashed drone streaming live data to cfclient', SUBTITLE),
     p('This guide sets up the <b>Robocode frozen version</b> of ESP-Drone. Every part is pinned to an '
-      'exact, tested version, so it works the same today and next year. Follow the parts in order; '
-      'Parts A, B and D are done <b>once per PC</b>.'),
+      'exact, tested version, so it works the same today and next year. Parts A and B are done '
+      '<b>once per PC</b>; everything you need for them is in one folder of the code, '
+      '<font face="Courier">robocode-setup</font>.'),
     Spacer(1, 4),
     table([
         ['Part', 'What you do', 'Time'],
-        ['A', 'Install the tools: Git and ESP-IDF 5.0.7', '25-40 min'],
-        ['B', 'Download the Robocode ESP-Drone code', '2 min'],
+        ['A', 'Download the Robocode ESP-Drone code', '5 min'],
+        ['B', 'Double-click <b>SETUP.bat</b>: it installs Git, ESP-IDF 5.0.7, Python 3.11 and cfclient', '20-40 min'],
         ['C', 'Build the firmware and flash it to the drone', '10 min'],
-        ['D', 'Install cfclient (PC app to view data and fly) - one double-click, also sets up Python', '5-10 min'],
-        ['E', 'Connect to the drone and check live data', '5 min'],
-        ['F', 'Troubleshooting', 'as needed'],
+        ['D', 'Connect to the drone and check live data in cfclient', '5 min'],
+        ['E', 'Troubleshooting', 'as needed'],
     ], [14 * mm, W - 44 * mm, 30 * mm]),
     Spacer(1, 8),
     p('What you need', H2),
     table([
         ['Item', 'Notes'],
-        ['Windows 10 or 11 PC', 'With internet for Parts A, B and D. Admin rights to install software.'],
+        ['Windows 10 or 11 PC', 'With internet (setup downloads about 1 GB) and permission to install software.'],
         ['ESP-Drone (ESP32-S2 or ESP32-S3)', 'The Robocode drones are ESP32-S2. Battery charged.'],
         ['USB cable', 'Must be a <b>data</b> cable (some phone-charging cables are power-only).'],
         ['Access to the code', 'A GitHub account with access to <b>RobocodeUK/esp-drone-idf5</b>, '
@@ -147,52 +147,75 @@ S += [
         ['Gamepad (optional)', 'For flying from cfclient, e.g. a PS3/PS4/Xbox USB controller.'],
     ], [52 * mm, W - 52 * mm]),
     Spacer(1, 8),
-    box('warn', 'Use exactly <b>ESP-IDF 5.0.7</b>: newer versions will not build this code. cfclient needs '
-                '<b>Python 3.11</b>; the cfclient installer in Part D sets this up for you, so you do not need to '
-                'install Python yourself. Do not download ESP-Drone from Espressif\'s GitHub; use the Robocode copy.'),
+    p('What is in the robocode-setup folder', H2),
+    table([
+        ['File', 'What it is'],
+        ['<b>SETUP.bat</b>', 'Double-click this. Installs everything below that the PC is missing.'],
+        ['ROBOCODE_SETUP_GUIDE.pdf', 'This guide.'],
+        ['install_cfclient.bat', 'Installs or repairs just cfclient (SETUP.bat runs it for you).'],
+        ['DOWNLOAD_LINKS.txt', 'The exact installer links and their fingerprints, if you ever need them by hand.'],
+        ['downloads', 'Created by SETUP.bat. Holds the downloaded installers; can be deleted afterwards.'],
+    ], [52 * mm, W - 52 * mm]),
     PageBreak(),
 ]
 
 # ---------------------------------------------------------------- Part A
 S += [
-    p('Part A - Install the tools (once per PC)', H1),
-    step(1, 'Install Git for Windows',
-         'Go to <b>git-scm.com/download/win</b>, download the 64-bit installer and run it. '
-         'Click <b>Next</b> on every page to accept the defaults, then <b>Install</b>.',
-         box('check', 'Open <b>Command Prompt</b> (Start menu, type <i>cmd</i>) and run '
-                      '<font face="Courier">git --version</font>. It should print a version number.')),
-    step(2, 'Install ESP-IDF 5.0.7 (the ESP32 build tools)',
-         'Go to <b>dl.espressif.com/dl/esp-idf/</b> and download the <b>ESP-IDF v5.0.7 Offline Installer</b> '
-         '(file name similar to <font face="Courier">esp-idf-tools-setup-offline-5.0.7.exe</font>, about 1 GB). '
-         'Run it and:',
+    p('Part A - Download the code (once per PC)', H1),
+    p('Use <b>one</b> of these two options. Both end with the code in '
+      '<font face="Courier">C:\\esp\\esp-drone</font>.'),
+    step(1, 'Option 1 - Download ZIP (no extra software needed)',
+         '&bull; Go to <b>github.com/RobocodeUK/esp-drone-idf5</b> and sign in.<br/>'
+         '&bull; Click the green <b>Code</b> button, then <b>Download ZIP</b>.<br/>'
+         '&bull; Create the folder <font face="Courier">C:\\esp</font>.<br/>'
+         '&bull; Right-click the downloaded ZIP, choose <b>Extract All</b>, and extract it into '
+         '<font face="Courier">C:\\esp</font>.<br/>'
+         '&bull; Rename the new folder <font face="Courier">esp-drone-idf5-main</font> to '
+         '<font face="Courier">esp-drone</font>.'),
+    step(2, 'Option 2 - Git clone (if Git is already installed)',
+         'Open <b>Command Prompt</b> and run:',
+         code('mkdir C:\\esp\n'
+              'git clone https://github.com/RobocodeUK/esp-drone-idf5.git C:\\esp\\esp-drone')),
+    box('check', 'This file must exist: <font face="Courier">C:\\esp\\esp-drone\\robocode-setup\\SETUP.bat</font>. '
+                 'If it is one folder deeper (e.g. <font face="Courier">esp-drone\\esp-drone-idf5-main\\...</font>), '
+                 'move the files up so the path matches. Keep this exact short path: long paths or paths with '
+                 'spaces cause build errors on Windows.'),
+    Spacer(1, 4),
+    p('Part B - Run SETUP.bat (once per PC)', H1),
+    step(1, 'Start the setup',
+         'In File Explorer open <font face="Courier">C:\\esp\\esp-drone\\robocode-setup</font> and '
+         'double-click <b>SETUP.bat</b>. Read the first screen and press any key to start. '
+         'It works through three stages and skips anything the PC already has:',
+         '&bull; <b>[1/3] Git for Windows</b> - downloaded and installed automatically.<br/>'
+         '&bull; <b>[2/3] ESP-IDF 5.0.7</b> - downloads the 916 MB installer, then opens its window (see step 2).<br/>'
+         '&bull; <b>[3/3] Python 3.11 and cfclient</b> - installed automatically, plus a '
+         '<b>cfclient (ESP-Drone)</b> shortcut on the desktop.',
+         box('note', 'When Windows asks <i>Do you want to allow this app to make changes?</i>, click <b>Yes</b>. '
+                     'Every download is checked against a fingerprint before it runs; if a file does not match, '
+                     'SETUP.bat deletes it and stops.')),
+    step(2, 'Click through the ESP-IDF installer window',
+         'When the ESP-IDF installer opens:',
          '&bull; Keep the default install folder <font face="Courier">C:\\Espressif</font>.<br/>'
          '&bull; If it offers to <b>apply fixes</b> (e.g. long path support), accept.<br/>'
-         '&bull; On the components page, leave the <b>drivers</b> ticked (Silicon Labs CP210x, FTDI, '
-         'Espressif USB). These let Windows talk to the drone over USB.<br/>'
-         '&bull; Leave the target chips ticked (at least ESP32-S2 and ESP32-S3).',
-         'Installation takes 15-30 minutes. At the end it adds Start menu shortcuts called '
-         '<b>ESP-IDF 5.0 CMD</b> and <b>ESP-IDF 5.0 PowerShell</b>.',
-         box('check', 'Open <b>ESP-IDF 5.0 CMD</b> from the Start menu and run '
-                      '<font face="Courier">idf.py --version</font>. It should print <b>ESP-IDF v5.0.7</b>.'),
-         box('warn', 'Always build and flash from the <b>ESP-IDF 5.0 CMD</b> shortcut. A normal Command Prompt '
-                     'or PowerShell window does not have the tools set up and will show errors.')),
+         '&bull; Leave the <b>drivers</b> ticked (Silicon Labs CP210x, FTDI, Espressif USB) and the target chips '
+         'ticked. The drivers let Windows talk to the drone over USB.<br/>'
+         '&bull; Click <b>Install</b>, wait 15-30 minutes, then click <b>Finish</b>. SETUP.bat carries on by itself.'),
+    step(3, 'Wait for "Setup complete"',
+         box('check', 'The SETUP.bat window ends with <b>Setup complete</b>. You now have an '
+                      '<b>ESP-IDF 5.0 CMD</b> shortcut in the Start menu and a <b>cfclient (ESP-Drone)</b> shortcut on '
+                      'the desktop. You can delete the <font face="Courier">downloads</font> folder to free about 1 GB.'),
+         box('note', 'If it says <b>Setup FAILED</b>, read the message above it, fix the problem (often the internet '
+                     'connection, or clicking No on a permission prompt) and run SETUP.bat again. Finished stages '
+                     'are skipped.')),
     Spacer(1, 6),
 ]
 
-# ---------------------------------------------------------------- Part B
+# ---------------------------------------------------------------- Part C
 S += [
-    p('Part B - Download the code (once per PC)', H1),
-    step(1, 'Clone the code into C:\\esp\\esp-drone',
-         'Open <b>Command Prompt</b> and run these two commands:',
-         code('mkdir C:\\esp\n'
-              'git clone https://github.com/RobocodeUK/esp-drone-idf5.git C:\\esp\\esp-drone'),
-         'The first time, a GitHub sign-in window may appear. Sign in with the account that has '
-         'access to RobocodeUK.',
-         box('note', 'No GitHub access? Ask your teacher for a copy of the <b>esp-drone</b> folder and put it at '
-                     '<font face="Courier">C:\\esp\\esp-drone</font>. Keep this exact short path: long paths or '
-                     'paths with spaces cause build errors on Windows.')),
-    Spacer(1, 4),
     p('Part C - Build and flash the firmware', H1),
+    box('warn', 'Always build and flash from the <b>ESP-IDF 5.0 CMD</b> shortcut in the Start menu. A normal '
+                'Command Prompt or PowerShell window does not have the tools set up and will show errors.'),
+    Spacer(1, 6),
     step(1, 'Plug in the drone and find its COM port',
          'Connect the drone to the PC with the USB data cable. Open <b>Device Manager</b> '
          '(right-click Start) and expand <b>Ports (COM &amp; LPT)</b>. Look for '
@@ -224,26 +247,9 @@ S += [
     Spacer(1, 6),
 ]
 
-# ---------------------------------------------------------------- Part D / E
+# ---------------------------------------------------------------- Part D
 S += [
-    p('Part D - Install cfclient (once per PC)', H1),
-    step(1, 'Run the installer',
-         'cfclient is the PC app for viewing the drone\'s live sensor data and flying it with a gamepad. '
-         'In File Explorer open <font face="Courier">C:\\esp\\esp-drone\\tools\\cfclient</font> and '
-         'double-click <b>install_cfclient.bat</b>. It works through four stages:',
-         '&bull; <b>[1/4]</b> Checks for Python 3.11. If this PC does not have it, it downloads '
-         '<b>Python 3.11.9</b> from python.org and installs it for your Windows user (no admin needed, '
-         'and any other Python versions are left alone).<br/>'
-         '&bull; <b>[2/4]</b> Checks Git is installed.<br/>'
-         '&bull; <b>[3/4]</b> Installs cfclient with the exact tested versions of everything.<br/>'
-         '&bull; <b>[4/4]</b> Adds a <b>cfclient (ESP-Drone)</b> shortcut to the desktop.',
-         'It takes 5-10 minutes. Leave the window open until it finishes.',
-         box('check', 'The window ends with <b>Done</b> and the <b>cfclient (ESP-Drone)</b> shortcut is on the '
-                      'desktop. Press any key to close the window.'),
-         box('note', 'If it says <i>Git not found</i>, install Git (Part A step 1) and run it again. '
-                     'It is safe to run the installer again at any time.')),
-    Spacer(1, 4),
-    p('Part E - Connect to the drone', H1),
+    p('Part D - Connect to the drone', H1),
     box('danger', 'For first tests, <b>remove the propellers</b> or hold the drone firmly. When a gamepad is '
                   'connected, moving the thrust stick spins the motors.'),
     Spacer(1, 6),
@@ -275,17 +281,23 @@ S += [
     Spacer(1, 8),
 ]
 
-# ---------------------------------------------------------------- Part F troubleshooting
+# ---------------------------------------------------------------- Part E troubleshooting
 S += [
-    p('Part F - Troubleshooting', H1),
+    p('Part E - Troubleshooting', H1),
     table([
         ['Problem', 'Fix'],
+        ['SETUP.bat: <i>download failed</i> or <i>does not match the expected fingerprint</i>',
+         'Check the internet connection and run SETUP.bat again (downloads resume). If the fingerprint still '
+         'does not match, do not install the file by hand; tell your teacher.'],
+        ['SETUP.bat: <i>Git did not install</i> or <i>ESP-IDF 5.0.7 was not found</i>',
+         'You probably clicked <b>No</b> on a permission prompt, or changed the ESP-IDF install folder. Run '
+         'SETUP.bat again, click <b>Yes</b>, and keep <font face="Courier">C:\\Espressif</font>.'],
         ['<font face="Courier">\'idf.py\' is not recognized</font>, or errors like <i>tool xtensa... has no '
          'installed versions</i> / <i>python_env ... doesn\'t exist</i>',
          'You are in a normal Command Prompt. Open <b>ESP-IDF 5.0 CMD</b> from the Start menu and try again.'],
         ['No COM port appears for the drone',
-         'Use a different (data) USB cable or USB socket. If it still does not appear, re-run the ESP-IDF '
-         'installer and make sure the <b>drivers</b> are ticked.'],
+         'Use a different (data) USB cable or USB socket. If it still does not appear, run the ESP-IDF installer '
+         'from the <font face="Courier">downloads</font> folder again and make sure the <b>drivers</b> are ticked.'],
         ['Flashing fails: <i>Failed to connect</i> or <i>Access is denied</i>',
          'Close anything else using the port (another monitor window, Arduino IDE). Check the COM number. '
          'If it still fails, hold the <b>BOOT</b> button on the drone board while the flash starts.'],
@@ -294,23 +306,18 @@ S += [
          'The motion sensor has locked up (common after a crash or on a low battery). Unplug <b>both</b> the '
          'USB cable and the battery, wait 10 seconds, then power on again. Charge the battery.'],
         ['cfclient data freezes after about 40 seconds',
-         'Windows switched back to your normal Wi-Fi. See the <b>IMPORTANT</b> box in Part E step 2.'],
-        ['cfclient data freezes after only a few seconds',
-         'You have an old cfclient install. Re-run <b>install_cfclient.bat</b> (Part D).'],
+         'Windows switched back to your normal Wi-Fi. See the <b>IMPORTANT</b> box in Part D step 2.'],
+        ['cfclient data freezes after only a few seconds, or cfclient will not start',
+         'Repair it: double-click <b>install_cfclient.bat</b> in the robocode-setup folder.'],
         ['cfclient: <i>Socket is already connected</i> or will not reconnect',
          'Close cfclient completely and open it again.'],
         ['Scan / Connect does nothing',
          'Check the PC is connected to the drone\'s Wi-Fi (not your normal network) and the drone is powered.'],
-        ['install_cfclient.bat: <i>Git not found</i>',
-         'Install Git for Windows (Part A step 1), then run it again.'],
-        ['install_cfclient.bat fails at step [1/4] (Python download or install)',
-         'Check the internet connection and run it again. If it still fails, install <b>Python 3.11.9</b> '
-         'yourself from <b>python.org/downloads/release/python-3119/</b> (Windows installer 64-bit) and run '
-         'the .bat again; it will find it.'],
         ['Build errors mentioning long paths or missing files',
          'Make sure the code is at exactly <font face="Courier">C:\\esp\\esp-drone</font> (no spaces).'],
     ], [70 * mm, W - 70 * mm]),
     Spacer(1, 10),
+    KeepTogether([
     p('For teachers: keeping the setup frozen', H2),
     p('Everything is pinned so nothing changes unless Robocode changes it:',
       ParagraphStyle('keep', parent=BODY, keepWithNext=1)),
@@ -319,16 +326,18 @@ S += [
         ['Firmware', '<b>RobocodeUK/esp-drone-idf5</b> (based on Espressif esp-drone commit db0f6562, the last '
                      'version for ESP-IDF 5.0). esp-now 2.5.2 is included in the code, so nothing is downloaded '
                      'at build time.'],
+        ['Installers', 'Git 2.47.1, ESP-IDF 5.0.7 offline, Python 3.11.9 - official links with SHA-256 '
+                       'fingerprints in <font face="Courier">robocode-setup\\DOWNLOAD_LINKS.txt</font>'],
         ['cfclient', '<b>RobocodeUK/crazyflie-clients-python</b>, commit 76d5093'],
         ['cflib (drone link)', '<b>RobocodeUK/crazyflie-lib-python</b>, commit f2baeab (adds the Wi-Fi keep-alive fix)'],
-        ['Python libraries', 'Exact versions in <font face="Courier">tools\\cfclient\\requirements-cfclient.txt</font>'],
-        ['Tools', 'ESP-IDF 5.0.7, Python 3.11.9'],
+        ['Python libraries', 'Exact versions in <font face="Courier">robocode-setup\\requirements-cfclient.txt</font>'],
     ], [38 * mm, W - 38 * mm]),
     Spacer(1, 6),
     p('&bull; Do not update to Espressif\'s latest esp-drone: it needs ESP-IDF 5.5 or 6.1.<br/>'
-      '&bull; To get Robocode updates later, run <font face="Courier">git pull</font> inside '
-      '<font face="Courier">C:\\esp\\esp-drone</font>, then re-run <b>install_cfclient.bat</b>.<br/>'
+      '&bull; To get Robocode updates later, download the ZIP again (or run <font face="Courier">git pull</font>), '
+      'then run <b>install_cfclient.bat</b>.<br/>'
       '&bull; More details are in <font face="Courier">ROBOCODE_README.md</font> in the code folder.'),
+    ]),
 ]
 
 doc = SimpleDocTemplate(OUT, pagesize=A4, leftMargin=18 * mm, rightMargin=18 * mm,

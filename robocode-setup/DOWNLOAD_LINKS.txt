@@ -1,0 +1,27 @@
+Robocode ESP-Drone - pinned installers
+======================================
+
+SETUP.bat downloads these automatically into robocode-setup\downloads\
+and refuses to run any file whose SHA-256 fingerprint does not match.
+If you need to download one by hand, use exactly these links.
+
+1. Git for Windows 2.47.1 (64-bit)
+   https://github.com/git-for-windows/git/releases/download/v2.47.1.windows.1/Git-2.47.1-64-bit.exe
+   SHA-256: 25527923debc06515b3016f2d6bca0820656e8281a23be2f43bfb658bd5dda70
+
+2. ESP-IDF 5.0.7 offline installer (about 916 MB)
+   https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-5.0.7.exe
+   (mirror: https://github.com/espressif/idf-installer/releases/download/offline-5.0.7/esp-idf-tools-setup-offline-5.0.7.exe)
+   SHA-256: 25068a62f0ac840e5f058a36d013864d3c27751a2344f62f3a14bb3288c8eedc
+
+3. Python 3.11.9 (64-bit) - used by cfclient
+   https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe
+   SHA-256: 5ee42c4eee1e6b4464bb23722f90b45303f79442df63083f05322f1785f5fdde
+
+4. cfclient + cflib (installed from GitHub by install_cfclient.bat)
+   https://github.com/RobocodeUK/crazyflie-clients-python  (commit 76d5093)
+   https://github.com/RobocodeUK/crazyflie-lib-python      (commit f2baeab)
+   Exact Python library versions: requirements-cfclient.txt
+
+To check a file by hand, in PowerShell:
+   Get-FileHash .\the-file.exe -Algorithm SHA256

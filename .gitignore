@@ -22,3 +22,6 @@ dependencies.lock
 # Robocode: per-target build folders and logs
 build_*/
 build_*.log
+
+# Robocode: installers downloaded by SETUP.bat
+robocode-setup/downloads/

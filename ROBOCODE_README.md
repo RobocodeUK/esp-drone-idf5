@@ -2,7 +2,21 @@
 
 A fixed copy of [espressif/esp-drone](https://github.com/espressif/esp-drone) that builds with **ESP-IDF v5.0.7** for **ESP32-S2** and **ESP32-S3** drones, plus a pinned PC client (cfclient). Nothing is downloaded at build time, and nothing changes unless Robocode changes it.
 
-The full step-by-step setup guide (with prerequisites) is **`ROBOCODE_SETUP_GUIDE.pdf`** in this folder.
+## Start here
+
+Everything for setting up a PC is in the **`robocode-setup`** folder:
+
+| File | What it is |
+|---|---|
+| **`SETUP.bat`** | Double-click this. Installs Git 2.47.1, ESP-IDF 5.0.7, Python 3.11.9 and cfclient, skipping anything already installed. |
+| `ROBOCODE_SETUP_GUIDE.pdf` | Step-by-step guide from a fresh Windows PC to live drone data. |
+| `install_cfclient.bat` | Installs or repairs just cfclient (SETUP.bat runs it). |
+| `DOWNLOAD_LINKS.txt` | The pinned official installer links and their SHA-256 fingerprints. |
+| `download_and_verify.ps1` | Helper: downloads a file and refuses it if the fingerprint doesn't match. |
+| `requirements-cfclient.txt` | Exact versions of every cfclient library. |
+| `guide/make_guide.py` | Regenerates the PDF (needs `reportlab`). |
+
+Installers are downloaded from the official sites into `robocode-setup\downloads\` (not stored in the repo; the ESP-IDF installer alone is 916 MB) and checked against their fingerprints before running.
 
 ## Quick reference
 
@@ -14,7 +28,7 @@ idf.py set-target esp32s2          (or esp32s3)
 idf.py -p COM3 flash monitor       (use your COM port; Ctrl+] to exit)
 ```
 
-cfclient — with **Git for Windows** installed, double-click `tools\cfclient\install_cfclient.bat`. It installs **Python 3.11.9** from python.org (for the current user) if the PC doesn't have it, then cfclient. Join the drone's Wi-Fi `ESP-DRONE_XXXXXXXXXXXX` (password `12345678`) and start **cfclient (ESP-Drone)** from the desktop.
+cfclient — installed by `SETUP.bat` (or repair it with `robocode-setup\install_cfclient.bat`). Join the drone's Wi-Fi `ESP-DRONE_XXXXXXXXXXXX` (password `12345678`) and start **cfclient (ESP-Drone)** from the desktop.
 
 ## What is pinned
 
@@ -24,7 +38,8 @@ cfclient — with **Git for Windows** installed, double-click `tools\cfclient\in
 | esp-now / cmake_utilities | vendored in `components/` | 2.5.2 / 0.5.3 |
 | cfclient | `RobocodeUK/crazyflie-clients-python` (fork of leeebo) | `76d5093` |
 | cflib | `RobocodeUK/crazyflie-lib-python` (fork of leeebo) | `f2baeab` (adds UDP keep-alive) |
-| Other Python libraries | PyPI | exact versions in `tools/cfclient/requirements-cfclient.txt` |
+| Other Python libraries | PyPI | exact versions in `robocode-setup/requirements-cfclient.txt` |
+| Installers | official download links | Git 2.47.1, ESP-IDF 5.0.7 offline, Python 3.11.9 (SHA-256 in `robocode-setup/DOWNLOAD_LINKS.txt`) |
 
 Don't update to newer upstream esp-drone: it needs ESP-IDF 5.5 or 6.1.
 
