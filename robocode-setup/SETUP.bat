@@ -27,9 +27,9 @@ echo   - Windows may ask "Do you want to allow this app to make
 echo     changes?" - click Yes.
 echo   - Takes 20-40 minutes on a new PC. Do not close this window.
 echo.
-if /i not "%HERE%"=="C:\esp\esp-drone\robocode-setup\" (
+if /i not "%HERE%"=="C:\esp\esp-drone-idf5\robocode-setup\" (
   echo   NOTE: this folder is %HERE%
-  echo         The guide expects the code at C:\esp\esp-drone. Long paths
+  echo         The guide expects the code at C:\esp\esp-drone-idf5. Long paths
   echo         or paths with spaces can break the firmware build.
   echo.
 )

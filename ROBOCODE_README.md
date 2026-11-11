@@ -23,7 +23,7 @@ Installers are downloaded from the official sites into `robocode-setup\downloads
 Build and flash — open **ESP-IDF 5.0 CMD** from the Start menu:
 
 ```
-cd C:\esp\esp-drone
+cd C:\esp\esp-drone-idf5
 idf.py set-target esp32s2          (or esp32s3)
 idf.py -p COM3 flash monitor       (use your COM port; Ctrl+] to exit)
 ```

@@ -163,7 +163,7 @@ S += [
 S += [
     p('Part A - Download the code (once per PC)', H1),
     p('Use <b>one</b> of these two options. Both end with the code in '
-      '<font face="Courier">C:\\esp\\esp-drone</font>.'),
+      '<font face="Courier">C:\\esp\\esp-drone-idf5</font>.'),
     step(1, 'Option 1 - Download ZIP (no extra software needed)',
          '&bull; Go to <b>github.com/RobocodeUK/esp-drone-idf5</b> and sign in.<br/>'
          '&bull; Click the green <b>Code</b> button, then <b>Download ZIP</b>.<br/>'
@@ -171,19 +171,20 @@ S += [
          '&bull; Right-click the downloaded ZIP, choose <b>Extract All</b>, and extract it into '
          '<font face="Courier">C:\\esp</font>.<br/>'
          '&bull; Rename the new folder <font face="Courier">esp-drone-idf5-main</font> to '
-         '<font face="Courier">esp-drone</font>.'),
+         '<font face="Courier">esp-drone-idf5</font>.'),
     step(2, 'Option 2 - Git clone (if Git is already installed)',
-         'Open <b>Command Prompt</b> and run:',
+         'Open <b>Command Prompt</b> and run these three commands:',
          code('mkdir C:\\esp\n'
-              'git clone https://github.com/RobocodeUK/esp-drone-idf5.git C:\\esp\\esp-drone')),
-    box('check', 'This file must exist: <font face="Courier">C:\\esp\\esp-drone\\robocode-setup\\SETUP.bat</font>. '
-                 'If it is one folder deeper (e.g. <font face="Courier">esp-drone\\esp-drone-idf5-main\\...</font>), '
+              'cd C:\\esp\n'
+              'git clone https://github.com/RobocodeUK/esp-drone-idf5.git')),
+    box('check', 'This file must exist: <font face="Courier">C:\\esp\\esp-drone-idf5\\robocode-setup\\SETUP.bat</font>. '
+                 'If it is one folder deeper (e.g. <font face="Courier">esp-drone-idf5\\esp-drone-idf5-main\\...</font>), '
                  'move the files up so the path matches. Keep this exact short path: long paths or paths with '
                  'spaces cause build errors on Windows.'),
     Spacer(1, 4),
     p('Part B - Run SETUP.bat (once per PC)', H1),
     step(1, 'Start the setup',
-         'In File Explorer open <font face="Courier">C:\\esp\\esp-drone\\robocode-setup</font> and '
+         'In File Explorer open <font face="Courier">C:\\esp\\esp-drone-idf5\\robocode-setup</font> and '
          'double-click <b>SETUP.bat</b>. Read the first screen and press any key to start. '
          'It works through three stages and skips anything the PC already has:',
          '&bull; <b>[1/3] Git for Windows</b> - downloaded and installed automatically.<br/>'
@@ -223,7 +224,7 @@ S += [
          box('note', 'If no new port appears: try another USB cable (it may be power-only) or another USB socket. '
                      'Unplug and replug the drone and watch which entry appears.')),
     step(2, 'Open ESP-IDF 5.0 CMD and go to the code folder',
-         code('cd C:\\esp\\esp-drone')),
+         code('cd C:\\esp\\esp-drone-idf5')),
     step(3, 'Check which chip the drone has (ESP32-S2 or ESP32-S3)',
          'Replace COM3 with your port:',
          code('python -m esptool -p COM3 chip_id'),
@@ -314,7 +315,7 @@ S += [
         ['Scan / Connect does nothing',
          'Check the PC is connected to the drone\'s Wi-Fi (not your normal network) and the drone is powered.'],
         ['Build errors mentioning long paths or missing files',
-         'Make sure the code is at exactly <font face="Courier">C:\\esp\\esp-drone</font> (no spaces).'],
+         'Make sure the code is at exactly <font face="Courier">C:\\esp\\esp-drone-idf5</font> (no spaces).'],
     ], [70 * mm, W - 70 * mm]),
     Spacer(1, 10),
     KeepTogether([
